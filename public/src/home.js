@@ -1,15 +1,18 @@
 function getTotalBooksCount(books) {
   return books.length;
 }
+// I just did a quick count with the use of .length
 
 function getTotalAccountsCount(accounts) {
   return accounts.length;
 }
+// I just did a quick count with the use of .length
 
 function getBooksBorrowedCount(books) {
   let borrowedBooksCount = books.filter((book) => book.borrows[0].returned === false);
 return borrowedBooksCount.length;
 }
+// I used the .filter to get the books that are out and did a quick count with the use of .length
 
 function getMostCommonGenres(books) {
   const genreCounts = books.reduce((acc, book) => {
@@ -22,11 +25,14 @@ function getMostCommonGenres(books) {
   }, {});
 
   const sortedGenres = Object.entries(genreCounts)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+  .map(([name, count]) => ({ name, count }))
+  return getFiveMostPopular(sortedGenres);
+}
 
-  return sortedGenres;
+// HELPER FUNCTION that sorts most popular and then gives 5 entries max.
+function getFiveMostPopular(item){ 
+  return item.sort((a, b) => b.count - a.count)
+  .slice(0, 5);
 }
 
 function getMostPopularBooks(books) {
@@ -35,12 +41,9 @@ function getMostPopularBooks(books) {
     count: book.borrows.length,
   }));
 
-  const sortedPopularBooks = timesBorrowed
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
-
-  return sortedPopularBooks;
+  return getFiveMostPopular(timesBorrowed);
 }
+// I used .map to get an array of the most borrowed books just including the title and the count of times that it's been borrowed, and lastly i used my helper function to get it the 5 most popular.
 
 function getMostPopularAuthors(books, authors) {
   const authorCounts = authors.map((author) => {
@@ -49,12 +52,9 @@ function getMostPopularAuthors(books, authors) {
     return { name: `${author.name.first} ${author.name.last}`, count: borrowCount };
   });
 
-  const sortedPopularAuthors = authorCounts
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
-
-  return sortedPopularAuthors;
+  return getFiveMostPopular(authorCounts);
 }
+// used .map to get an array of the outhors, used .filter to get the authors books filtered and I accomodated how the array should look like. Lastly I used my helper function to get the 5 most popular.
 
 module.exports = {
   getTotalBooksCount,
@@ -64,3 +64,4 @@ module.exports = {
   getMostPopularBooks,
   getMostPopularAuthors,
 };
+
